@@ -75,6 +75,7 @@ int main(int argc, const char * argv[]) {
                 current_time[1] += 1;
             }
         }
+		// 60분인 경우와 그렇지 않은 경우로 나누어 생각해준다;
         else{
             int ten = t/10;
             int one = t%10;
