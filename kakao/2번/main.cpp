@@ -1,35 +1,41 @@
 #include <string>
-#include <vector>
-#include <map>
-#include <algorithm>
-#include <iostream>
 
 using namespace std;
 
-
-int solution(int cacheSize, vector<string> cities) {
+int solution(string dartResult) {
     int answer = 0;
-    int size = (int)cities.size();
-    vector<string> cache;
+    int index=0, point[3];
+    char bonus[3], option[3];
+    
+    int size = (int)dartResult.length();
     for(int i=0; i<size; i++){
-        int check  = 0;
-        transform(cities[i].begin(), cities[i].end(), cities[i].begin(), (int(*)(int))toupper);
-        for(int j=0; j<(int)cache.size(); j++){
-            if(cache[j].compare(cities[i])==0){
-                cache.erase(cache.begin()+j);
-                cache.push_back(cities[i]);
-                check = 1;
-                answer++;
-                break;
+        if(dartResult[i]=='S'||dartResult[i]=='D'||dartResult[i]=='T'){
+            if(i-2>=0 && dartResult[i-2]>'0' && dartResult[i-2]<='1'){
+                point[index] = 10;
             }
-        }
-        if(!check){
-            answer += 5;
-            if(cacheSize > 0){
-                if((int)cache.size() >= cacheSize) cache.erase(cache.begin());
-                cache.push_back(cities[i]);
+            else point[index] = dartResult[i-1]-'0';
+            bonus[index] = dartResult[i];
+            if(dartResult[i+1]=='#'||dartResult[i+1]=='*'){
+                option[index] = dartResult[i+1];
             }
+            index++;
         }
     }
+    for(int i=0; i<3; i++){
+        if(bonus[i]=='D'){
+            point[i] = point[i]*point[i];
+        }
+        else if(bonus[i]=='T'){
+            point[i] = point[i]*point[i]*point[i];
+        }
+        if(option[i]=='#'){
+            point[i] *= -1;
+        }
+        else if(option[i]=='*'){
+            if(i-1>=0) for(int j=i; j>=i-1; j--) point[j] *= 2;
+            else for(int j=i; j>=0; j--) point[j] *= 2;
+        }
+    }
+    for(int i=0; i<3; i++) answer += point[i];
     return answer;
 }
