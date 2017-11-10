@@ -44,6 +44,7 @@ void check(int row, int col){
 
 int main(int argc, const char * argv[]) {
     scanf("%d %d", &N, &M);
-    check(0, 0);
+	if(N<=0 || M<=0) printf("-1");
+    else check(0, 0);
     return 0;
 }
